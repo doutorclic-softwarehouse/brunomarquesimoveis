@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bruno Marques Imóveis | Premium</title>
+    <style>
+        body { 
+            background-color: #000; 
+            color: #fff; 
+            font-family: Arial, sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            margin: 0;
+            padding: 20px;
+        }
+        .container { 
+            background: #121212; 
+            border: 1px solid #F9C71D; 
+            padding: 30px; 
+            border-radius: 20px; 
+            width: 100%; 
+            max-width: 400px; 
+            text-align: center;
+            box-shadow: 0 0 20px rgba(249, 199, 29, 0.2);
+        }
+        .logo { 
+            max-width: 100%; 
+            height: auto; 
+            margin-bottom: 20px; 
+        }
+        .gold-text { color: #F9C71D; font-weight: bold; font-size: 22px; margin-bottom: 10px; display: block; }
+        .sub-text { color: #888; font-size: 13px; margin-bottom: 25px; display: block; }
+        
+        .field-group { text-align: left; margin-bottom: 15px; }
+        label { color: #F9C71D; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; display: block; }
+        
+        select { 
+            width: 100%; 
+            padding: 12px; 
+            background: #1a1a1a; 
+            border: 1px solid #333; 
+            color: #fff; 
+            border-radius: 8px; 
+            outline: none;
+            appearance: none; /* Remove a seta padrão do navegador */
+        }
+
+        select:focus { border-color: #F9C71D; }
+
+        button { 
+            width: 100%; 
+            padding: 15px; 
+            background: #F9C71D; 
+            color: #000; 
+            border: none; 
+            border-radius: 30px; 
+            font-weight: bold; 
+            text-transform: uppercase; 
+            cursor: pointer; 
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .footer-text { font-size: 10px; color: #444; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="#" class="logo-link">
+            <img src="https://i.ibb.co/VpC3nQxQ/logo-edited.jpg" alt="Atendimento Premium" class="logo">
+        </a>     
+
+
+        
+        <span class="gold-text">Atendimento Premium</span>
+        <span class="sub-text">Qualifique-se para ofertas exclusivas em Unamar</span>
+
+        <form id="leadForm">
+            <div class="field-group">
+                <label>O que você busca?</label>
+                <select id="objetivo">
+                    <option>Moradia Própria</option>
+                    <option>Investimento / Aluguel</option>
+                    <option>Lazer / Veraneio</option>
+                </select>
+            </div>
+
+            <div class="field-group">
+                <label>Investimento Pretendido</label>
+                <select id="valor">
+                    <option>Até R$ 250 mil</option>
+                    <option>R$ 250k a R$ 500k</option>
+                    <option>Acima de R$ 500 mil</option>
+                </select>
+            </div>
+
+            <div class="field-group">
+                <label>Entrada Imediata?</label>
+                <select id="entrada">
+                    <option>Sim, recurso em mãos</option>
+                    <option>Depende de venda de bem</option>
+                    <option>Financiamento Bancário</option>
+                </select>
+            </div>
+
+            <button type="button" onclick="enviarZap()">Falar com Especialista</button>
+        </form>
+
+        <div class="footer-text">TECNOLOGIA POR VENDA CASAS RJ</div>
+    </div>
+
+    <script>
+        function enviarZap() {
+            const objetivo = document.getElementById('objetivo').value;
+            const valor = document.getElementById('valor').value;
+            const entrada = document.getElementById('entrada').value;
+            
+            const texto = `Olá! Gostaria de atendimento premium.%0A%0A*Objetivo:* ${objetivo}%0A*Valor:* ${valor}%0A*Entrada:* ${entrada}`;
+            const numero = "5522992414173"; // Coloque o número aqui
+            
+            window.open(`https://wa.me/${numero}?text=${texto}`, '_blank');
+        }
+    </script>
+</body>
+</html>
