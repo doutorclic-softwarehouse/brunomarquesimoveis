@@ -26,11 +26,11 @@
             text-align: center;
             box-shadow: 0 10px 30px rgba(249, 199, 29, 0.15);
         }
-        .logo { max-width: 180px; margin-bottom: 20px; }
+        .logo { max-width: 160px; margin-bottom: 20px; border-radius: 10px; }
         .gold-text { color: #F9C71D; font-weight: bold; font-size: 22px; margin-bottom: 5px; display: block; }
-        .sub-text { color: #888; font-size: 14px; margin-bottom: 25px; display: block; line-height: 1.4; }
+        .sub-text { color: #888; font-size: 13px; margin-bottom: 25px; display: block; line-height: 1.4; }
         
-        .field-group { text-align: left; margin-bottom: 18px; }
+        .field-group { text-align: left; margin-bottom: 18px; display: block; }
         label { color: #F9C71D; font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 8px; display: block; }
         
         select { 
@@ -43,12 +43,13 @@
             outline: none;
             cursor: pointer;
             font-size: 14px;
+            transition: 0.3s;
         }
 
         select:focus { border-color: #F9C71D; }
 
-        /* Estilo para esconder campos dinamicamente */
-        .hidden { display: none; }
+        /* Classe para esconder os campos */
+        .hidden { display: none !important; }
 
         button { 
             width: 100%; 
@@ -60,13 +61,13 @@
             font-weight: 800; 
             text-transform: uppercase; 
             cursor: pointer; 
-            margin-top: 10px;
+            margin-top: 15px;
             font-size: 15px;
             transition: all 0.3s ease;
         }
 
         button:hover { background: #fff; transform: translateY(-2px); }
-        .footer-text { font-size: 10px; color: #555; margin-top: 25px; }
+        .footer-text { font-size: 10px; color: #444; margin-top: 25px; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -75,30 +76,111 @@
         <img src="https://i.ibb.co/VpC3nQxQ/logo-edited.jpg" alt="Bruno Marques Imóveis" class="logo">
         
         <span class="gold-text">Atendimento VIP</span>
-        <span class="sub-text">Unamar, Tamoios e Região dos Lagos</span>
+        <span class="sub-text">Especialista em Unamar e Região dos Lagos</span>
 
         <form id="leadForm">
             <div class="field-group">
-                <label>O que você precisa hoje?</label>
-                <select id="tipo_servico" onchange="ajustarFormulario()">
-                    <option value="" disabled selected>Escolha uma opção...</option>
-                    <option value="comprar">Quero Comprar um Imóvel</option>
-                    <option value="alugar_fixo">Quero Aluguel Fixo (Mensal)</option>
-                    <option value="temporada">Aluguel de Temporada (Diárias)</option>
+                <label>O que você busca hoje?</label>
+                <select id="tipo_servico" onchange="alternarCampos()">
+                    <option value="" disabled selected>Selecione uma opção...</option>
+                    <option value="comprar">Comprar um Imóvel</option>
+                    <option value="alugar_fixo">Aluguel Fixo (Mensal)</option>
+                    <option value="temporada">Aluguel de Temporada</option>
                 </select>
             </div>
 
             <div id="grupo_venda" class="field-group hidden">
-                <label>Faixa de Valor (Venda)</label>
+                <label>Faixa de Investimento</label>
                 <select id="valor_venda">
                     <option>Até R$ 150 mil</option>
                     <option>R$ 150 mil a R$ 250 mil</option>
-                    <option>Acima de R$ 250 mil</option>
+                    <option>R$ 250 mil a R$ 450 mil</option>
+                    <option>Acima de R$ 450 mil</option>
+                </select>
+            </div>
+
+            <div id="grupo_pagamento" class="field-group hidden">
+                <label>Como pretende pagar?</label>
+                <select id="forma_pagamento">
+                    <option>Entrada + Parcelas Diretas</option>
+                    <option>Pagamento À Vista</option>
+                    <option>Financiamento Bancário</option>
+                    <option>Permuta (Carro/Imóvel)</option>
                 </select>
             </div>
 
             <div id="grupo_aluguel" class="field-group hidden">
                 <label>Preço do Aluguel Mensal</label>
                 <select id="valor_aluguel">
-                    <option>Até R$ 1.000</option>
+                    <option>R$ 600 a R$ 1.000</option>
                     <option>R$ 1.000 a R$ 2.000</option>
+                    <option>Acima de R$ 2.000</option>
+                </select>
+            </div>
+
+            <div id="grupo_temporada" class="field-group hidden">
+                <label>Média de Diária</label>
+                <select id="valor_temporada">
+                    <option>Até R$ 300 / dia</option>
+                    <option>R$ 300 a R$ 600 / dia</option>
+                    <option>Acima de R$ 600 / dia</option>
+                </select>
+            </div>
+
+            <button type="button" onclick="enviarZap()">Consultar Disponibilidade</button>
+        </form>
+
+        <div class="footer-text">Tecnologia por Venda Casas RJ</div>
+    </div>
+
+    <script>
+        function alternarCampos() {
+            const selecao = document.getElementById('tipo_servico').value;
+            
+            // Elementos
+            const gVenda = document.getElementById('grupo_venda');
+            const gPagamento = document.getElementById('grupo_pagamento');
+            const gAluguel = document.getElementById('grupo_aluguel');
+            const gTemporada = document.getElementById('grupo_temporada');
+
+            // Resetar - Esconde tudo primeiro
+            gVenda.classList.add('hidden');
+            gPagamento.classList.add('hidden');
+            gAluguel.classList.add('hidden');
+            gTemporada.classList.add('hidden');
+
+            // Lógica para mostrar os campos certos
+            if (selecao === "comprar") {
+                gVenda.classList.remove('hidden');
+                gPagamento.classList.remove('hidden');
+            } else if (selecao === "alugar_fixo") {
+                gAluguel.classList.remove('hidden');
+            } else if (selecao === "temporada") {
+                gTemporada.classList.remove('hidden');
+            }
+        }
+
+        function enviarZap() {
+            const tipo = document.getElementById('tipo_servico').value;
+            if (!tipo) {
+                alert("Por favor, selecione o que você busca.");
+                return;
+            }
+
+            let detalhes = "";
+            const numero = "5522992414173";
+
+            if (tipo === "comprar") {
+                detalhes = `*Busca:* Compra de Imóvel\n*Valor:* ${document.getElementById('valor_venda').value}\n*Pagamento:* ${document.getElementById('forma_pagamento').value}`;
+            } else if (tipo === "alugar_fixo") {
+                detalhes = `*Busca:* Aluguel Fixo\n*Preço:* ${document.getElementById('valor_aluguel').value}`;
+            } else if (tipo === "temporada") {
+                detalhes = `*Busca:* Temporada\n*Diária:* ${document.getElementById('valor_temporada').value}`;
+            }
+
+            const mensagem = encodeURIComponent(`Olá Bruno! Gostaria de um atendimento premium:\n\n${detalhes}`);
+            window.open(`https://wa.me/${numero}?text=${mensagem}`, '_blank');
+        }
+    </script>
+</body>
+</html>
