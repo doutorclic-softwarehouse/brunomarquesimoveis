@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bruno Marques Imóveis | Premium Unamar</title>
+    <title>Bruno Marques Imóveis | Premium</title>
     <style>
         body { 
             background-color: #000; 
@@ -26,11 +26,7 @@
             text-align: center;
             box-shadow: 0 10px 30px rgba(249, 199, 29, 0.15);
         }
-        .logo { 
-            max-width: 180px; 
-            height: auto; 
-            margin-bottom: 20px; 
-        }
+        .logo { max-width: 180px; margin-bottom: 20px; }
         .gold-text { color: #F9C71D; font-weight: bold; font-size: 22px; margin-bottom: 5px; display: block; }
         .sub-text { color: #888; font-size: 14px; margin-bottom: 25px; display: block; line-height: 1.4; }
         
@@ -45,13 +41,14 @@
             color: #fff; 
             border-radius: 10px; 
             outline: none;
-            appearance: none;
             cursor: pointer;
             font-size: 14px;
-            transition: 0.3s;
         }
 
-        select:focus { border-color: #F9C71D; background: #222; }
+        select:focus { border-color: #F9C71D; }
+
+        /* Estilo para esconder campos dinamicamente */
+        .hidden { display: none; }
 
         button { 
             width: 100%; 
@@ -66,16 +63,10 @@
             margin-top: 10px;
             font-size: 15px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(249, 199, 29, 0.3);
         }
 
-        button:hover {
-            background: #fff;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(249, 199, 29, 0.4);
-        }
-
-        .footer-text { font-size: 10px; color: #555; margin-top: 25px; letter-spacing: 1px; }
+        button:hover { background: #fff; transform: translateY(-2px); }
+        .footer-text { font-size: 10px; color: #555; margin-top: 25px; }
     </style>
 </head>
 <body>
@@ -83,68 +74,31 @@
     <div class="container">
         <img src="https://i.ibb.co/VpC3nQxQ/logo-edited.jpg" alt="Bruno Marques Imóveis" class="logo">
         
-        <span class="gold-text">Consultoria Especializada</span>
-        <span class="sub-text">Encontre sua casa de praia em Unamar ou Cabo Frio</span>
+        <span class="gold-text">Atendimento VIP</span>
+        <span class="sub-text">Unamar, Tamoios e Região dos Lagos</span>
 
         <form id="leadForm">
             <div class="field-group">
-                <label>Qual o seu objetivo principal?</label>
-                <select id="objetivo">
-                    <option value="" disabled selected>Selecione...</option>
-                    <option>Moradia (Sair do Aluguel)</option>
-                    <option>Casa de Veraneio (Lazer)</option>
-                    <option>Investimento (Renda com Aluguel Fixa)</option>
-                    <option>Investimento (Temporada/Airbnb)</option>
+                <label>O que você precisa hoje?</label>
+                <select id="tipo_servico" onchange="ajustarFormulario()">
+                    <option value="" disabled selected>Escolha uma opção...</option>
+                    <option value="comprar">Quero Comprar um Imóvel</option>
+                    <option value="alugar_fixo">Quero Aluguel Fixo (Mensal)</option>
+                    <option value="temporada">Aluguel de Temporada (Diárias)</option>
                 </select>
             </div>
 
-            <div class="field-group">
-                <label>Faixa de Investimento</label>
-                <select id="valor">
-                    <option value="" disabled selected>Selecione o valor...</option>
+            <div id="grupo_venda" class="field-group hidden">
+                <label>Faixa de Valor (Venda)</label>
+                <select id="valor_venda">
                     <option>Até R$ 150 mil</option>
                     <option>R$ 150 mil a R$ 250 mil</option>
-                    <option>R$ 250 mil a R$ 450 mil</option>
-                    <option>Acima de R$ 450 mil</option>
+                    <option>Acima de R$ 250 mil</option>
                 </select>
             </div>
 
-            <div class="field-group">
-                <label>Forma de Pagamento</label>
-                <select id="entrada">
-                    <option value="" disabled selected>Como deseja pagar?</option>
-                    <option>À Vista (Com desconto)</option>
-                    <option>Entrada + Parcelamento Direto</option>
-                    <option>Financiamento Bancário</option>
-                    <option>Tenho Carro/Bem como parte do pagto</option>
-                </select>
-            </div>
-
-            <button type="button" onclick="enviarZap()">Ver Opções Disponíveis</button>
-        </form>
-
-        <div class="footer-text">TECNOLOGIA POR VENDA CASAS RJ</div>
-    </div>
-
-    <script>
-        function enviarZap() {
-            const objetivo = document.getElementById('objetivo').value;
-            const valor = document.getElementById('valor').value;
-            const entrada = document.getElementById('entrada').value;
-
-            if(!objetivo || !valor || !entrada) {
-                alert("Por favor, selecione todas as opções para um atendimento personalizado.");
-                return;
-            }
-            
-            const numero = "5522992414173";
-            const saudacao = "Olá Bruno! Vim pelo site e gostaria de um atendimento especializado para a região.";
-            const detalhes = `*Objetivo:* ${objetivo}%0A*Faixa de Valor:* ${valor}%0A*Forma de Pagto:* ${entrada}`;
-            
-            const link = `https://wa.me/${numero}?text=${saudacao}%0A%0A${detalhes}`;
-            
-            window.open(link, '_blank');
-        }
-    </script>
-</body>
-</html>
+            <div id="grupo_aluguel" class="field-group hidden">
+                <label>Preço do Aluguel Mensal</label>
+                <select id="valor_aluguel">
+                    <option>Até R$ 1.000</option>
+                    <option>R$ 1.000 a R$ 2.000</option>
