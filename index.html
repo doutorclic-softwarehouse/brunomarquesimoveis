@@ -30,7 +30,9 @@
         .gold-text { color: #F9C71D; font-weight: bold; font-size: 22px; margin-bottom: 5px; display: block; }
         .sub-text { color: #888; font-size: 13px; margin-bottom: 25px; display: block; line-height: 1.4; }
         
-        .field-group { text-align: left; margin-bottom: 18px; }
+        .field-group { text-align: left; margin-bottom: 18px; display: none; } /* Começam todos escondidos */
+        .show { display: block !important; } /* Classe que força o aparecimento */
+
         label { color: #F9C71D; font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 8px; display: block; }
         
         select { 
@@ -43,12 +45,9 @@
             outline: none;
             cursor: pointer;
             font-size: 14px;
-            transition: 0.3s;
         }
 
         select:focus { border-color: #F9C71D; }
-
-        .hidden { display: none !important; }
 
         button { 
             width: 100%; 
@@ -62,10 +61,9 @@
             cursor: pointer; 
             margin-top: 15px;
             font-size: 15px;
-            transition: all 0.3s ease;
         }
 
-        button:hover { background: #fff; transform: translateY(-2px); }
+        button:hover { background: #fff; transform: translateY(-2px); transition: 0.3s; }
         .footer-text { font-size: 10px; color: #444; margin-top: 25px; text-transform: uppercase; }
     </style>
 </head>
@@ -75,30 +73,131 @@
         <img src="https://i.ibb.co/VpC3nQxQ/logo-edited.jpg" alt="Bruno Marques Imóveis" class="logo">
         
         <span class="gold-text">Atendimento VIP</span>
-        <span class="sub-text">Encontre o imóvel ideal na Região dos Lagos</span>
+        <span class="sub-text">Qualifique seu perfil para ofertas em Unamar e Região</span>
 
         <form id="leadForm">
-            <div class="field-group">
+            <div class="field-group show" style="display: block;">
                 <label>O que você busca hoje?</label>
-                <select id="tipo_servico" onchange="alternarCampos()">
-                    <option value="" disabled selected>Selecione uma opção...</option>
+                <select id="tipo_servico" onchange="atualizarFunil()">
+                    <option value="" disabled selected>Escolha uma opção...</option>
                     <option value="comprar">Comprar um Imóvel</option>
                     <option value="alugar_fixo">Aluguel Fixo (Mensal)</option>
                     <option value="temporada">Aluguel de Temporada</option>
                 </select>
             </div>
 
-            <div id="grupo_caracteristicas" class="hidden">
-                <div class="field-group">
-                    <label>Quantidade de Quartos</label>
-                    <select id="quartos">
-                        <option>1 Quarto</option>
-                        <option selected>2 Quartos</option>
-                        <option>3 Quartos ou mais</option>
-                    </select>
-                </div>
+            <div id="f_quartos" class="field-group">
+                <label>Quantidade de Quartos</label>
+                <select id="quartos">
+                    <option>1 Quarto</option>
+                    <option selected>2 Quartos</option>
+                    <option>3 Quartos ou mais</option>
+                </select>
+            </div>
 
-                <div class="field-group">
-                    <label>Deseja Piscina?</label>
-                    <select id="piscina">
-                        <option>Com Piscina (
+            <div id="f_piscina" class="field-group">
+                <label>Deseja Piscina?</label>
+                <select id="piscina">
+                    <option>Com Piscina (Indispensável)</option>
+                    <option>Sem Piscina / Tanto faz</option>
+                </select>
+            </div>
+
+            <div id="f_venda" class="field-group">
+                <label>Faixa de Investimento</label>
+                <select id="valor_venda">
+                    <option>Até R$ 150 mil</option>
+                    <option>R$ 150 mil a R$ 250 mil</option>
+                    <option>R$ 250 mil a R$ 450 mil</option>
+                    <option>Acima de R$ 450 mil</option>
+                </select>
+            </div>
+
+            <div id="f_pagamento" class="field-group">
+                <label>Como pretende pagar?</label>
+                <select id="forma_pagamento">
+                    <option>Entrada + Parcelas Diretas</option>
+                    <option>Pagamento À Vista</option>
+                    <option>Financiamento Bancário</option>
+                    <option>Permuta (Carro/Imóvel)</option>
+                </select>
+            </div>
+
+            <div id="f_aluguel" class="field-group">
+                <label>Preço do Aluguel Mensal</label>
+                <select id="valor_aluguel">
+                    <option>R$ 600 a R$ 1.000</option>
+                    <option>R$ 1.000 a R$ 2.000</option>
+                    <option>Acima de R$ 2.000</option>
+                </select>
+            </div>
+
+            <div id="f_temporada" class="field-group">
+                <label>Média de Diária</label>
+                <select id="valor_temporada">
+                    <option>Até R$ 300 / dia</option>
+                    <option>R$ 300 a R$ 600 / dia</option>
+                    <option>Acima de R$ 600 / dia</option>
+                </select>
+            </div>
+
+            <button type="button" onclick="enviarZap()">Consultar Disponibilidade</button>
+        </form>
+
+        <div class="footer-text">Tecnologia por Venda Casas RJ</div>
+    </div>
+
+    <script>
+        function atualizarFunil() {
+            const selecao = document.getElementById('tipo_servico').value;
+            
+            // Esconde todos os campos primeiro (remove a classe 'show')
+            const campos = document.querySelectorAll('.field-group');
+            campos.forEach(campo => {
+                if(campo.id !== "") campo.classList.remove('show');
+            });
+
+            // Se selecionou qualquer coisa, mostramos Quartos e Piscina
+            if (selecao !== "") {
+                document.getElementById('f_quartos').classList.add('show');
+                document.getElementById('f_piscina').classList.add('show');
+            }
+
+            // Lógica específica
+            if (selecao === "comprar") {
+                document.getElementById('f_venda').classList.add('show');
+                document.getElementById('f_pagamento').classList.add('show');
+            } else if (selecao === "alugar_fixo") {
+                document.getElementById('f_aluguel').classList.add('show');
+            } else if (selecao === "temporada") {
+                document.getElementById('f_temporada').classList.add('show');
+            }
+        }
+
+        function enviarZap() {
+            const tipo = document.getElementById('tipo_servico').value;
+            if (!tipo) {
+                alert("Por favor, selecione o que você busca.");
+                return;
+            }
+
+            const quartos = document.getElementById('quartos').value;
+            const piscina = document.getElementById('piscina').value;
+            let detalhes = "";
+            const numero = "5522992414173";
+
+            if (tipo === "comprar") {
+                detalhes = `*Busca:* Compra\n*Valor:* ${document.getElementById('valor_venda').value}\n*Pagto:* ${document.getElementById('forma_pagamento').value}`;
+            } else if (tipo === "alugar_fixo") {
+                detalhes = `*Busca:* Aluguel Fixo\n*Valor:* ${document.getElementById('valor_aluguel').value}`;
+            } else if (tipo === "temporada") {
+                detalhes = `*Busca:* Temporada\n*Diária:* ${document.getElementById('valor_temporada').value}`;
+            }
+
+            const msg = `Olá Bruno! Quero atendimento premium:\n\n${detalhes}\n*Quartos:* ${quartos}\n*Piscina:* ${piscina}`;
+            
+            window.open(`https://wa.me/${numero}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+    </script>
+</body>
+</html>
