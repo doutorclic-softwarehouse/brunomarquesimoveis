@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bruno Marques Imóveis | Premium</title>
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Bruno Marques Imóveis | Atendimento Premium">
+    <meta property="og:description" content="Qualifique seu perfil para ofertas exclusivas em Unamar e Região dos Lagos.">
+    <meta property="og:image" content="https://i.ibb.co/VpC3nQxQ/logo-edited.jpg">
+    <meta property="og:image:width" content="300">
+    <meta property="og:image:height" content="300">
+    <meta property="og:url" content="https://seusite.com.br">
+
     <style>
         body { 
             background-color: #000; 
@@ -30,8 +39,8 @@
         .gold-text { color: #F9C71D; font-weight: bold; font-size: 22px; margin-bottom: 5px; display: block; }
         .sub-text { color: #888; font-size: 13px; margin-bottom: 25px; display: block; line-height: 1.4; }
         
-        .field-group { text-align: left; margin-bottom: 18px; display: none; } /* Começam todos escondidos */
-        .show { display: block !important; } /* Classe que força o aparecimento */
+        .field-group { text-align: left; margin-bottom: 18px; display: none; } 
+        .show { display: block !important; }
 
         label { color: #F9C71D; font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 8px; display: block; }
         
@@ -150,20 +159,16 @@
     <script>
         function atualizarFunil() {
             const selecao = document.getElementById('tipo_servico').value;
-            
-            // Esconde todos os campos primeiro (remove a classe 'show')
             const campos = document.querySelectorAll('.field-group');
             campos.forEach(campo => {
                 if(campo.id !== "") campo.classList.remove('show');
             });
 
-            // Se selecionou qualquer coisa, mostramos Quartos e Piscina
             if (selecao !== "") {
                 document.getElementById('f_quartos').classList.add('show');
                 document.getElementById('f_piscina').classList.add('show');
             }
 
-            // Lógica específica
             if (selecao === "comprar") {
                 document.getElementById('f_venda').classList.add('show');
                 document.getElementById('f_pagamento').classList.add('show');
@@ -195,7 +200,6 @@
             }
 
             const msg = `Olá Bruno! Quero atendimento premium:\n\n${detalhes}\n*Quartos:* ${quartos}\n*Piscina:* ${piscina}`;
-            
             window.open(`https://wa.me/${numero}?text=${encodeURIComponent(msg)}`, '_blank');
         }
     </script>
